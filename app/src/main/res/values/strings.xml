@@ -1,0 +1,64 @@
+<resources>
+    <string name="app_name">Smart Drone</string>
+    <string name="title_activity_demo">GSDemoActivity</string>
+    <string name="disconnected">Disconnected</string>
+    <string name="product_information">-</string>
+    <string name="connection_loose">Status: No Product Connected</string>
+    <string name="sdk_version">DJI SDK Version: %1$s</string>
+    <string name="title_activity_login">LoginActivity</string>
+    <string name="prompt_email">Email</string>
+    <string name="prompt_password">Password</string>
+    <string name="action_sign_in">Sign in or register</string>
+    <string name="action_sign_in_short">Sign in</string>
+    <string name="welcome">"Welcome !"</string>
+    <string name="invalid_username">Not a valid username</string>
+    <string name="invalid_password">Password must be >5 characters</string>
+    <string name="login_failed">"Login failed"</string>
+    <string name="title_activity_utama">MainActivity</string>
+
+
+    <string name="title_activity_home">MainActivity</string>
+    <string name="title_home">Home</string>
+    <string name="title_dashboard">Dashboard</string>
+    <string name="title_notifications">Notifications</string>
+
+    <string name="provider_here_maps">Here Maps</string>
+    <string name="provider_amaps">AMaps</string>
+    <string name="provider_mapbox">Mapbox</string>
+    <string name="provider_google_maps">Google Maps</string>
+
+
+    <string name="show_home_point">Show Home Point</string>
+    <string name="dji_account_indicator">DJI Account Login Indicator</string>
+    <string-array name="mapTypeArray">
+        <item>Standard</item>
+        <item>Satellite</item>
+        <item>Hybrid</item>
+    </string-array>
+    <string name="fly_zone_legend">Fly Zone Legend</string>
+    <string name="unlock_flyzones">Unlock Fly Zones</string>
+    <string name="fly_zone">Fly Zone</string>
+    <string name="home_direction">Home Direction</string>
+    <string name="auto_frame">Auto Frame</string>
+    <string name="show_gimbal_yaw">Show Gimbal Yaw</string>
+    <string name="clear_flight_path">Clear Flight Path</string>
+    <string-array name="iconArray">
+        <item>Aircraft</item>
+        <item>Home</item>
+        <item>Gimbal Yaw</item>
+        <item>Locked Zone</item>
+        <item>Unlocked Zone</item>
+    </string-array>
+    <string name="replace_icon">Replace Icon</string>
+
+    <string-array name="lineTypeArray">
+        <item>Home Direction</item>
+        <item>Flight Path</item>
+        <item>Fly Zone Border</item>
+    </string-array>
+    <string name="new_color">New Color</string>
+    <string name="show_flight_path">Show Flight Path</string>
+    <string name="mapbox_id">Please enter the map box key here.</string>
+    <string name="error_map_not_initialized">The map has not been initialized yet</string>
+    <string name="sync">Sync</string>
+</resources>
