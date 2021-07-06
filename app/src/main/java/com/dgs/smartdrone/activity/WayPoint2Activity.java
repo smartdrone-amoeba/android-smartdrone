@@ -67,6 +67,8 @@ public class WayPoint2Activity extends Activity {
     private int margin;
     private int deviceWidth;
     private int deviceHeight;
+    private boolean start = false;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -163,14 +165,24 @@ public class WayPoint2Activity extends Activity {
         btnStartMission.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                startWaypointMission();
+                if(!start) {
+                    startWaypointMission();
+                    start = true;
+                    btnStartMission.setImageResource(android.R.drawable.ic_delete);
+                }
+                else {
+                    stopWaypointMission();
+                    start = false;
+                    btnStartMission.setImageResource(android.R.drawable.ic_media_play);
+                }
             }
         });
         ImageView btnSetting = findViewById(R.id.btnSettingss);
         btnSetting.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(getBaseContext(), SettingActivity.class);
+                //Intent intent = new Intent(getBaseContext(), SettingActivity.class);
+                Intent intent = new Intent(getBaseContext(), MissionActivity.class);
                 startActivity(intent);
             }
         });
@@ -325,7 +337,16 @@ public class WayPoint2Activity extends Activity {
         }
         return instance;
     }
+    private void stopWaypointMission(){
 
+        getWaypointMissionOperator().stopMission(new CommonCallbacks.CompletionCallback() {
+            @Override
+            public void onResult(DJIError error) {
+                setResultToToast("Mission Stop: " + (error == null ? "Successfully" : error.getDescription()));
+            }
+        });
+
+    }
     private void startWaypointMission(){
 
             getWaypointMissionOperator().startMission(new CommonCallbacks.CompletionCallback() {
@@ -390,7 +411,7 @@ public class WayPoint2Activity extends Activity {
         @Override
         public void onExecutionFinish(@Nullable final DJIError error) {
             setResultToToast("Execution finished: " + (error == null ? "Success!" : error.getDescription()));
-
+            stopWaypointMission();
             //stopService(new Intent(getBaseContext(), GPSTracker.class));
         }
     };

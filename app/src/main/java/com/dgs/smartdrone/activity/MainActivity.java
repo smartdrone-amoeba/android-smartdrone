@@ -138,7 +138,8 @@ public class MainActivity extends Activity implements View.OnClickListener {
                                 showToast("Register Success");
 
                                 // ADD CALL HERE
-                               // DJISDKManager.getInstance().enableBridgeModeWithBridgeAppIP("192.168.1.8");
+                                // DJISDKManager.getInstance().enableBridgeModeWithBridgeAppIP("192.168.1.8");
+                                DJISDKManager.getInstance().enableBridgeModeWithBridgeAppIP("192.168.43.131");
                             } else {
                                 showToast( "Register sdk fails, check network is available");
                             }
@@ -234,7 +235,7 @@ public class MainActivity extends Activity implements View.OnClickListener {
         mTextProduct = (TextView) findViewById(R.id.text_product_info);
         mBtnOpen = (Button) findViewById(R.id.btnSplashStart);
         mBtnOpen.setOnClickListener(this);
-        //mBtnOpen.setEnabled(false);
+        mBtnOpen.setEnabled(false);
 
         mVersionTv = (TextView) findViewById(R.id.textView2);
         mVersionTv.setText(getResources().getString(R.string.sdk_version, DJISDKManager.getInstance().getSDKVersion()));
@@ -294,8 +295,8 @@ public class MainActivity extends Activity implements View.OnClickListener {
 //                    GooglePlayServicesUtil.getErrorDialog(status, this, status);
 //                    showToast("Cannot run without Google Play, please check！");
 //                } else {
-                    Intent intent = new Intent(this, LoginActivity.class);
-                    startActivity(intent);
+                Intent intent = new Intent(this, LoginActivity.class);
+                startActivity(intent);
                 //}
                 break;
             }

@@ -26,6 +26,7 @@ import android.widget.Button;
 import android.widget.CompoundButton;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.ScrollView;
 import android.widget.SeekBar;
@@ -37,10 +38,14 @@ import com.amap.api.maps.model.HeatmapTileProvider;
 import com.amap.api.maps.model.TileOverlay;
 import com.amap.api.maps.model.TileOverlayOptions;
 import com.dgs.smartdrone.R;
+import com.dgs.smartdrone.entity.Settings;
+import com.dgs.smartdrone.entity.SettingsDetail;
+import com.dgs.smartdrone.helper.DBHelper;
 import com.dji.mapkit.core.maps.DJIMap;
 import com.dji.mapkit.core.models.DJILatLng;
 import com.dji.mapkit.core.models.annotations.DJIMarker;
 import com.dji.mapkit.core.models.annotations.DJIMarkerOptions;
+import com.dji.mapkit.core.models.annotations.DJIPolylineOptions;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.model.BitmapDescriptor;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
@@ -48,7 +53,6 @@ import com.google.android.gms.maps.model.GroundOverlay;
 import com.google.android.gms.maps.model.GroundOverlayOptions;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.LatLngBounds;
-import com.google.android.gms.maps.model.MarkerOptions;
 import com.here.android.mpa.common.GeoCoordinate;
 import com.here.android.mpa.mapping.Map;
 import com.here.android.mpa.mapping.MapOverlay;
@@ -61,6 +65,8 @@ import java.util.Random;
 
 import dji.common.error.DJIError;
 import dji.common.mission.waypoint.Waypoint;
+import dji.common.mission.waypoint.WaypointAction;
+import dji.common.mission.waypoint.WaypointActionType;
 import dji.common.mission.waypoint.WaypointMission;
 import dji.common.mission.waypoint.WaypointMissionFinishedAction;
 import dji.common.mission.waypoint.WaypointMissionFlightPathMode;
@@ -104,7 +110,7 @@ public class SettingActivity extends Activity implements CompoundButton.OnChecke
     private float altitude = 100.0f;
     private WaypointMissionHeadingMode mHeadingMode = WaypointMissionHeadingMode.AUTO;
     private WaypointMissionFinishedAction mFinishedAction = WaypointMissionFinishedAction.NO_ACTION;
-
+    private int id=0;
     @SuppressLint("WrongViewCast")
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -115,7 +121,7 @@ public class SettingActivity extends Activity implements CompoundButton.OnChecke
         MapWidget.OnMapReadyListener onMapReadyListener = new MapWidget.OnMapReadyListener() {
             @Override
             public void onMapReady(@NonNull final DJIMap map) {
-                map.setMapType(DJIMap.MapType.SATELLITE);
+                map.setMapType(DJIMap.MAP_TYPE_NORMAL);
 
                 map.setOnMarkerDragListener(new DJIMap.OnMarkerDragListener() {
                     @Override
@@ -173,6 +179,81 @@ public class SettingActivity extends Activity implements CompoundButton.OnChecke
 
                 map.getUiSettings().setMyLocationButtonEnabled(true);
 
+                //setmarker
+                if(id > 0) {
+                    Settings data = mydb.getData(Integer.valueOf(id));
+                    ArrayList<SettingsDetail> listDetail = mydb.getAllSettingsDetail(Integer.valueOf(id));
+
+                    //data
+                    TextView altitude = findViewById(R.id.altitude_setting);
+                    if(listDetail.size()>0) {
+                        altitude.setText(String.valueOf(listDetail.get(0).getAltitude()));
+                    }
+                    RadioButton speed =null;
+                    switch ((int) data.getSpeed()){
+                        case 3:
+                            speed = findViewById(R.id.lowSpeed_setting);
+                            speed.isChecked();
+                            break;
+                        case 5:
+                            speed = findViewById(R.id.MidSpeed_setting);
+                            speed.isChecked();
+                            break;
+                        case 10:
+                            speed = findViewById(R.id.HighSpeed_setting);
+                            speed.isChecked();
+                            break;
+                    }
+                    switch ((int) data.getGoway()){
+                        case 0:
+                            speed = findViewById(R.id.finishNone_setting);
+                            speed.isChecked();
+                            break;
+                        case 1:
+                            speed = findViewById(R.id.finishGoHome_setting);
+                            speed.isChecked();
+                            break;
+                        case 2:
+                            speed = findViewById(R.id.finishAutoLanding_setting);
+                            speed.isChecked();
+                            break;
+                        case 3:
+                            speed = findViewById(R.id.finishToFirst_setting);
+                            speed.isChecked();
+                            break;
+                    }
+                    switch ((int) data.getHandling()){
+                        case 0:
+                            speed = findViewById(R.id.headingNext_setting);
+                            speed.isChecked();
+                            break;
+                        case 1:
+                            speed = findViewById(R.id.headingInitDirec_setting);
+                            speed.isChecked();
+                            break;
+                        case 2:
+                            speed = findViewById(R.id.headingRC_setting);
+                            speed.isChecked();
+                            break;
+                        case 3:
+                            speed = findViewById(R.id.headingWP_setting);
+                            speed.isChecked();
+                            break;
+                    }
+                    //detail
+
+                    DJIPolylineOptions option = new DJIPolylineOptions().width(5).color(Color.BLUE).geodesic(true);
+                    DJIMarkerOptions optionMarker = new DJIMarkerOptions();
+                    int i=1;
+                    for (SettingsDetail item : listDetail
+                    ) {
+                        //option.add(new LatLng(item.getLan(), item.getLongs()));
+                        optionMarker.position(new DJILatLng(item.getLan(), item.getLongs()));
+                        map.addMarker(optionMarker).setTitle("Point " + i);
+                        i+=1;
+                    }
+                }
+
             }
         };
         Intent intent = getIntent();
@@ -214,7 +295,11 @@ public class SettingActivity extends Activity implements CompoundButton.OnChecke
 
         movePanel();
 
+        mydb = new DBHelper(this);
+
+        id = intent.getIntExtra("id",0);
         showSettingDialog();
+
 
     }
 
@@ -241,15 +326,15 @@ public class SettingActivity extends Activity implements CompoundButton.OnChecke
                 submitSaveAndUpload();
                 break;
             case R.id.btn_clear:
-                runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
-                        googleMap = (GoogleMap) mapWidget.getMap().getMap();
-                        googleMap.clear();
-                    }
-
-                });
-                waypointList.clear();
+//                runOnUiThread(new Runnable() {
+//                    @Override
+//                    public void run() {
+//                        googleMap = (GoogleMap) mapWidget.getMap().getMap();
+//                        googleMap.clear();
+//                    }
+//
+//                });
+                 waypointList.clear();
                 waypointMissionBuilder.waypointList(waypointList);
                 break;
 
@@ -276,8 +361,6 @@ public class SettingActivity extends Activity implements CompoundButton.OnChecke
                         setResultToToast("mHeadingMode "+mHeadingMode);
                         configWayPointMission();
 
-                        //upload
-                        uploadWayPointMission();
                     }
 
                 })
@@ -319,16 +402,27 @@ public class SettingActivity extends Activity implements CompoundButton.OnChecke
         });
 
     }
+    private DBHelper mydb ;
 
     private void  configWayPointMission(){
+
+        mydb.deleteSettings(id);
+        mydb.deleteSettingsDetail(id);
+        long id = mydb.insertSetting(
+                "tes 1",
+                mFinishedAction.value(),
+                mHeadingMode.value(),
+                mSpeed);
 
         if (waypointMissionBuilder == null){
 
             waypointMissionBuilder = new WaypointMission.Builder().finishedAction(mFinishedAction)
                     .headingMode(mHeadingMode)
+
                     .autoFlightSpeed(mSpeed)
                     .maxFlightSpeed(mSpeed)
                     .flightPathMode(WaypointMissionFlightPathMode.NORMAL)
+                    .setGimbalPitchRotationEnabled(true)
                     ;
 
         }else
@@ -338,6 +432,7 @@ public class SettingActivity extends Activity implements CompoundButton.OnChecke
                     .autoFlightSpeed(mSpeed)
                     .maxFlightSpeed(mSpeed)
                     .flightPathMode(WaypointMissionFlightPathMode.NORMAL)
+                    .setGimbalPitchRotationEnabled(true)
                     ;
 
         }
@@ -345,9 +440,26 @@ public class SettingActivity extends Activity implements CompoundButton.OnChecke
         if (waypointMissionBuilder.getWaypointList().size() > 0){
 
             for (int i=0; i< waypointMissionBuilder.getWaypointList().size(); i++){
+                Waypoint item = waypointMissionBuilder.getWaypointList().get(i);
+                mydb.insertSettingDetail(
+                        id
+                        , altitude
+                        , item.coordinate.getLatitude()
+                        , item.coordinate.getLongitude()
+                        , 50
+                        , 0);
+
                 waypointMissionBuilder.getWaypointList().get(i).altitude = altitude;
-                waypointMissionBuilder.getWaypointList().get(i).shootPhotoTimeInterval = 1;
-                waypointMissionBuilder.getWaypointList().get(i).gimbalPitch = 50;
+                waypointMissionBuilder.getWaypointList().get(i).shootPhotoDistanceInterval = 6000;
+                waypointMissionBuilder.getWaypointList().get(i).gimbalPitch = -60;
+                waypointMissionBuilder.getWaypointList().get(i).setHeadingInner(50);
+                //waypointMissionBuilder.getWaypointList().get(i).
+                waypointMissionBuilder.getWaypointList().get(i).addAction(new WaypointAction(WaypointActionType.START_TAKE_PHOTO, 0));
+                //waypointMissionBuilder.getWaypointList().get(i).addAction(new WaypointAction(WaypointActionType.GIMBAL_PITCH, 0));
+
+
+
+                //waypointMissionBuilder.getWaypointList().get(i).waypointActions = waypointActions;
                 /*
                 misi 1 0de
                 misi 2 10de
@@ -369,6 +481,9 @@ public class SettingActivity extends Activity implements CompoundButton.OnChecke
         DJIError error = getWaypointMissionOperator().loadMission(waypointMissionBuilder.build());
         if (error == null) {
             setResultToToast("loadWaypoint succeeded");
+
+            //upload
+            uploadWayPointMission();
         } else {
             setResultToToast("loadWaypoint failed " + error.getDescription());
         }
@@ -450,6 +565,10 @@ public class SettingActivity extends Activity implements CompoundButton.OnChecke
                 }
             }
         });
+
+
+        //get data
+
 
 
     }

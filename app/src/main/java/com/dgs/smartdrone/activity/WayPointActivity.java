@@ -39,6 +39,8 @@ import java.util.concurrent.ConcurrentHashMap;
 
 import dji.common.flightcontroller.FlightControllerState;
 import dji.common.mission.waypoint.Waypoint;
+import dji.common.mission.waypoint.WaypointAction;
+import dji.common.mission.waypoint.WaypointActionType;
 import dji.common.mission.waypoint.WaypointMission;
 import dji.common.mission.waypoint.WaypointMissionDownloadEvent;
 import dji.common.mission.waypoint.WaypointMissionExecutionEvent;
@@ -477,8 +479,7 @@ public class WayPointActivity extends FragmentActivity implements View.OnClickLi
                         setResultToToast("mHeadingMode "+String.valueOf(mHeadingMode));
                         configWayPointMission();
 
-                        //upload
-                        uploadWayPointMission();
+
 
                     }
 
@@ -515,7 +516,10 @@ public class WayPointActivity extends FragmentActivity implements View.OnClickLi
                     .headingMode(mHeadingMode)
                     .autoFlightSpeed(mSpeed)
                     .maxFlightSpeed(mSpeed)
-                    .flightPathMode(WaypointMissionFlightPathMode.NORMAL);
+                    .flightPathMode(WaypointMissionFlightPathMode.NORMAL)
+                    .setGimbalPitchRotationEnabled(true)
+                    .setGimbalElevationOptimizeEnabled(true)
+            ;
 
         }else
         {
@@ -525,6 +529,8 @@ public class WayPointActivity extends FragmentActivity implements View.OnClickLi
                     .autoFlightSpeed(mSpeed)
                     .maxFlightSpeed(mSpeed)
                     .flightPathMode(WaypointMissionFlightPathMode.NORMAL)
+                    .setGimbalPitchRotationEnabled(true)
+                    .setGimbalElevationOptimizeEnabled(true)
                     ;
 
         }
@@ -533,6 +539,9 @@ public class WayPointActivity extends FragmentActivity implements View.OnClickLi
 
             for (int i=0; i< waypointMissionBuilder.getWaypointList().size(); i++){
                 waypointMissionBuilder.getWaypointList().get(i).altitude = altitude;
+                //waypointMissionBuilder.getWaypointList().get(i).shootPhotoTimeInterval = 0;
+                waypointMissionBuilder.getWaypointList().get(i).gimbalPitch = -90;
+                waypointMissionBuilder.getWaypointList().get(i).addAction(new WaypointAction(WaypointActionType.START_TAKE_PHOTO, 0));
             }
 
             setResultToToast("Set Waypoint attitude successfully");
@@ -544,6 +553,9 @@ public class WayPointActivity extends FragmentActivity implements View.OnClickLi
         DJIError error = getWaypointMissionOperator().loadMission(waypointMissionBuilder.build());
         if (error == null) {
             setResultToToast("loadWaypoint succeeded");
+
+            //upload
+            uploadWayPointMission();
         } else {
             setResultToToast("loadWaypoint failed " + error.getDescription());
         }

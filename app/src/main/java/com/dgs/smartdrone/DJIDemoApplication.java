@@ -78,8 +78,7 @@ public class DJIDemoApplication extends Application {
                     });
 
                     DJISDKManager.getInstance().startConnectionToProduct();
-
-                      //DJISDKManager.getInstance().enableBridgeModeWithBridgeAppIP("192.168.43.131");
+                    DJISDKManager.getInstance().enableBridgeModeWithBridgeAppIP("192.168.43.131");
 
                 } else {
 

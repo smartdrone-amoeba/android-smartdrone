@@ -6,62 +6,53 @@
     android:layout_height="match_parent"
     android:orientation="vertical">
 
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_gravity="top"
+        android:scaleType="center"
+        android:src="@drawable/loginbg" />
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        android:paddingLeft="100dp"
+        android:paddingRight="100dp">
 
-        <LinearLayout
+        <ImageView
             android:layout_width="match_parent"
-            android:layout_height="50dp"
-            android:layout_marginTop="100dp"
-            android:orientation="horizontal">
+            android:layout_height="80dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginBottom="10dp"
+            app:srcCompat="@drawable/logologin" />
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:fontFamily="@font/archivo_black"
-                android:gravity="right"
-                android:shadowColor="#040404"
-                android:text="Smart"
-                android:textColor="#807E7E"
-                android:textSize="30sp"
-                android:textStyle="bold" />
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:fontFamily="@font/archivo_black"
-                android:text="drone"
-                android:textColor="#B5B2B2"
-                android:textSize="30sp"
-                android:textStyle="bold" />
-
-        </LinearLayout>
-
-        <TextView
+        <EditText
             android:id="@+id/txtUsername"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginLeft="60dp"
             android:layout_marginRight="60dp"
             android:layout_marginBottom="20dp"
-            android:background="@drawable/rounded_transparant"
-            android:hint="Username"
-            android:padding="10dp" />
+            android:background="@drawable/round_white"
+            android:hint="Email"
+            android:inputType="textPersonName"
+            android:padding="10dp"
+            android:text="dayat@gmail.com"/>
 
-        <TextView
+
+        <EditText
             android:id="@+id/txtPassword"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginLeft="60dp"
             android:layout_marginRight="60dp"
             android:layout_marginBottom="20dp"
-            android:background="@drawable/rounded_transparant"
+            android:background="@drawable/round_white"
             android:hint="********"
-            android:padding="10dp" />
+            android:inputType="textPassword"
+            android:padding="10dp"
+            android:text="123456"/>
 
         <CheckBox
             android:id="@+id/cbSuveyor"
@@ -71,12 +62,20 @@
             android:layout_marginRight="60dp"
             android:text="Saya Surveyor" />
 
+        <TextView
+            android:id="@+id/txtAlert"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textAlignment="center"
+            android:textColor="#E91E63"
+            android:textStyle="bold" />
+
         <Button
             android:id="@+id/btnLogin"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginLeft="60dp"
-            android:layout_marginTop="50dp"
+            android:layout_marginTop="5dp"
             android:layout_marginRight="60dp"
             android:background="@drawable/rounded_blue"
             android:text="Login"

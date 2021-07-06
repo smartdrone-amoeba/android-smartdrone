@@ -3,6 +3,12 @@
     xmlns:tools="http://schemas.android.com/tools"
     package="com.dgs.smartdrone">
 
+    <!--
+         The ACCESS_COARSE/FINE_LOCATION permissions are not required to use
+         Google Maps Android API v2, but you must specify either coarse or fine
+         location permissions for the "MyLocation" functionality.
+    -->
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <uses-permission android:name="android.permission.BLUETOOTH" />
     <uses-permission android:name="android.permission.BLUETOOTH_ADMIN" />
     <uses-permission android:name="android.permission.INTERNET" />
@@ -11,17 +17,19 @@
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
-    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <uses-permission android:name="android.permission.CHANGE_WIFI_STATE" />
     <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
-    <uses-permission android:name="android.permission.CHANGE_CONFIGURATION"
+    <uses-permission
+        android:name="android.permission.CHANGE_CONFIGURATION"
         tools:ignore="ProtectedPermissions" />
     <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW" />
-    <uses-permission android:name="android.permission.WRITE_SETTINGS"
+    <uses-permission
+        android:name="android.permission.WRITE_SETTINGS"
         tools:ignore="ProtectedPermissions" />
     <uses-permission android:name="android.permission.VIBRATE" />
     <uses-permission android:name="android.permission.WAKE_LOCK" />
-    <uses-permission android:name="android.permission.MOUNT_UNMOUNT_FILESYSTEMS"
+    <uses-permission
+        android:name="android.permission.MOUNT_UNMOUNT_FILESYSTEMS"
         tools:ignore="ProtectedPermissions" />
 
     <uses-feature android:name="android.hardware.camera" />
@@ -45,21 +53,51 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         tools:ignore="AllowBackup,GoogleAppIndexingWarning">
-        <activity android:name=".activity.SettingActivity"
+
+        <!--
+             The API key for Google Maps-based APIs is defined as a string resource.
+             (See the file "res/values/google_maps_api.xml").
+             Note that the API key is linked to the encryption key used to sign the APK.
+             You need a different API key for each encryption key, including the release key that is used to
+             sign the APK for publishing.
+             You can define the keys for the debug and release targets in src/debug/ and src/release/.
+        -->
+        <meta-data
+            android:name="com.google.android.geo.API_KEY"
+            android:value="@string/google_maps_key" />
+
+        <activity
+            android:name=".activity.ProjectDetailActivity"
+            android:screenOrientation="sensorLandscape" 
+            android:label="@string/title_activity_project_detail"></activity>
+        <activity
+            android:name=".activity.ProjectAddActivity"
+            android:screenOrientation="sensorLandscape"
+            android:label="@string/title_activity_project_add" />
+        <activity
+            android:name=".activity.PojectListActivity"
+            android:screenOrientation="sensorLandscape" />
+        <activity
+            android:name=".activity.HomeActivity"
+            android:label="@string/title_activity_home"
+            android:screenOrientation="sensorLandscape"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity android:name=".activity.MissionActivity" />
+        <activity
+            android:name=".activity.SettingActivity"
             android:label="Map Widget"
             android:launchMode="singleTop"
             android:screenOrientation="sensorLandscape"
-            android:theme="@style/MapTheme"></activity>
-        <activity
-            android:name=".activity.HomeActivity"
-            android:label="@string/title_activity_home" />
+            android:theme="@style/MapTheme" />
         <activity
             android:name=".activity.WayPoint2Activity"
             android:label="Default Widgets"
             android:launchMode="singleTop"
             android:screenOrientation="sensorLandscape"
             android:theme="@android:style/Theme.Black.NoTitleBar.Fullscreen" />
-        <activity android:name=".activity.LoginActivity" />
+        <activity
+            android:name=".activity.LoginActivity"
+            android:screenOrientation="sensorLandscape" />
 
         <uses-library android:name="com.android.future.usb.accessory" />
         <uses-library
@@ -69,11 +107,6 @@
         <meta-data
             android:name="com.dji.sdk.API_KEY"
             android:value="61e235672777eb2d6f88ea91" />
-        <!--lama-->
-        <meta-data
-            android:name="com.google.android.geo.API_KEY"
-            android:value="AIzaSyDaRj88RCbeDol8L4KUXitemAt_2imdJuc" />
-
         <meta-data
             android:name="com.here.android.maps.appid"
             android:value="Enter your API key here" />
@@ -83,17 +116,16 @@
         <meta-data
             android:name="com.here.android.maps.license.key"
             android:value="Enter your API key here" />
-
         <meta-data
             android:name="com.google.android.gms.version"
             android:value="@integer/google_play_services_version" />
         <meta-data
             android:name="preloaded_fonts"
             android:resource="@array/preloaded_fonts" />
+
         <service
             android:name=".helper.GPSTracker"
             tools:ignore="Instantiatable" />
-
         <service
             android:name="dji.sdk.sdkmanager.DJIGlobalService"
             tools:ignore="Instantiatable" /> <!-- DJI SDK -->
